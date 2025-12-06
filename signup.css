@@ -1,0 +1,179 @@
+/* whole page */
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    background-color: #f0f2f5;
+}
+
+/* top UIUbook logo */
+.logo-wrapper {
+    text-align: center;
+    padding-top: 24px;
+    padding-bottom: 12px;
+}
+
+.logo-text {
+    font-size: 52px;
+    font-weight: 800;
+    color: #f97316; /* orange – login page er sathe match */
+}
+
+/* main white card */
+.signup-card {
+    max-width: 432px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    padding: 16px 16px 20px 16px;
+}
+
+/* header text */
+.card-header h1 {
+    margin: 4px 0 0 0;
+    font-size: 28px;
+}
+
+.card-header p {
+    margin: 4px 0 12px 0;
+    color: #606770;
+    font-size: 15px;
+}
+
+/* form */
+.signup-form {
+    font-size: 15px;
+}
+
+/* rows with multiple columns */
+.row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+/* basic input style */
+.input {
+    border: 1px solid #ccd0d5;
+    border-radius: 5px;
+    padding: 8px 10px;
+    font-size: 15px;
+    box-sizing: border-box;
+    background-color: #f5f6f7;
+}
+
+.input:focus {
+    outline: none;
+    border-color: #f97316;
+    box-shadow: 0 0 0 1px rgba(249,115,22,0.2);
+}
+
+/* width helpers */
+.half {
+    width: 50%;
+}
+
+.third {
+    width: 33.333%;
+}
+
+.full {
+    width: 100%;
+    margin-top: 8px;
+}
+
+/* label text like Date of birth, Gender */
+.field-label {
+    margin-top: 8px;
+    margin-bottom: 4px;
+    font-size: 13px;
+    color: #606770;
+}
+
+.question {
+    display: inline-block;
+    font-size: 11px;
+    border-radius: 50%;
+    border: 1px solid #606770;
+    width: 14px;
+    height: 14px;
+    text-align: center;
+    line-height: 14px;
+    margin-left: 4px;
+}
+
+/* gender box style */
+.gender-box {
+    border: 1px solid #ccd0d5;
+    border-radius: 5px;
+    padding: 6px 10px;
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    background-color: #f5f6f7;
+}
+
+.gender-box input {
+    margin-left: 8px;
+}
+
+/* info text */
+.info-text {
+    font-size: 11px;
+    color: #777;
+    margin-top: 8px;
+    margin-bottom: 0;
+}
+
+.info-text a {
+    color: #f97316;
+    text-decoration: none;
+}
+
+.info-text a:hover {
+    text-decoration: underline;
+}
+
+/* sign up button */
+.btn-signup {
+    margin-top: 16px;
+    width: 200px;
+    background-color: #d27d15; /* green */
+    border: none;
+    border-radius: 6px;
+    padding: 8px 0;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* already-have-account link */
+.login-link {
+    display: block;
+    text-align: center;
+    margin-top: 12px;
+    font-size: 15px;
+    color: #f97316;
+    text-decoration: none;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+}
+
+/* small screen */
+@media (max-width: 480px) {
+    .signup-card {
+        margin: 10px 8px;
+    }
+
+    .logo-text {
+        font-size: 40px;
+    }
+}

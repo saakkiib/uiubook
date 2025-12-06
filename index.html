@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UIUbook - Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- full page container -->
+    <div class="page-wrapper">
+        
+        <!-- LEFT SIDE : logo+para -->
+        <div class="left-panel">
+            <h1 class="logo-text">UIUbook</h1>
+            <h2 class="recent-title">
+                UIUbook helps us connect and share with the people in our campus.
+            </h2>
+            <p class="recent-subtitle">Login or create new account to join.</p>
+        </div>
+
+        <!-- RIGHT SIDE : login form -->
+        <div class="right-panel">
+            <div class="login-box">
+                <form id="loginForm">
+                    <input 
+                        type="email" 
+                        name="email" 
+                        placeholder="Email address" 
+                        class="input-field"
+                        required
+                    >
+
+                    <input 
+                        type="password" 
+                        name="password" 
+                        placeholder="Password" 
+                        class="input-field"
+                        required
+                    >
+
+                    <button type="submit" class="btn btn-login">
+                        Log in
+                    </button>
+
+                    <a href="https://www.facebook.com/login/identify/?ctx=recover&ars=facebook_login&from_login_screen=0" 
+                       class="forgot-link">
+                        Forgotten password?
+                    </a>
+
+                    <hr class="divider">
+
+                    <!-- create account link as button -->
+                    <a href="signup.html" class="btn btn-create">
+                        Create new account
+                    </a>
+                </form>
+            </div>
+
+            <p class="create-page-text">
+                <a href="#" class="create-page-link">Create a Page</a>
+                for a celebrity, brand or business.
+            </p>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-top">
+            <a href="#">English (UK)</a>
+            <a href="#">বাংলা</a>
+            <a href="#">हिन्दी</a>
+            <a href="#">Español</a>
+        </div>
+
+        <hr class="footer-divider">
+
+        <div class="footer-bottom">
+            <a href="#">About</a>
+            <a href="#">Help</a>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <span>UIUbook © 2025</span>
+        </div>
+    </footer>
+
+    <!-- 🔥 Firebase LOGIN script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword
+        } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBCsaeGzR2D624UNdLGKuHVLwz1JNSAMjE",
+            authDomain: "uiubook.firebaseapp.com",
+            projectId: "uiubook",
+            storageBucket: "uiubook.firebasestorage.app",
+            messagingSenderId: "332448153892",
+            appId: "1:332448153892:web:c41a0f58d12b957954b3b1",
+            measurementId: "G-Q9NZQDYF3S"
+        };
+
+        const app  = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const form = document.getElementById("loginForm");
+
+        // status message
+        const statusEl = document.createElement("p");
+        statusEl.style.fontSize = "13px";
+        statusEl.style.textAlign = "center";
+        statusEl.style.marginTop = "8px";
+        form.appendChild(statusEl);
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const email    = form.email.value;
+            const password = form.password.value;
+
+            statusEl.textContent = "Logging in...";
+            statusEl.style.color = "#555";
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                    statusEl.textContent = "Login successful! Opening chat...";
+                    statusEl.style.color = "#16a34a";
+
+                    setTimeout(() => {
+                        window.location.href = "chat.html";
+                    }, 800);
+                })
+                .catch((error) => {
+                    statusEl.textContent = error.message;
+                    statusEl.style.color = "#dc2626";
+                });
+        });
+    </script>
+</body>
+</html>

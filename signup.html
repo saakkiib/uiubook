@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>UIUbook - Sign Up</title>
+  <style>
+    body {
+
+      
+      margin: 0;
+      background: #f0f2f5;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    }
+    /* blur background image */
+body::before {
+    content: "";
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background-image: url("uiubook.jpg");  
+    background-size: cover;           /* full screen cover */
+    background-position: center;
+    background-repeat: no-repeat;
+
+    filter: blur(2px);                /* blur er level */
+    z-index: -2;                      /* sob content er niche thakbe */
+    transform: scale(1.5);           /* edge e blur cut na hoy tai ektu boro */
+}
+    .logo-top {
+      text-align: center;
+      padding-top: 24px;
+      padding-bottom: 12px;
+    }
+    .logo-top span {
+      font-size: 52px;
+      font-weight: 700;
+      color: #f28918;
+    }
+    .card {
+      width: 432px;
+      margin: 0 auto 40px auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      padding: 16px 16px 24px 16px;
+    }
+    .card h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+    .card p.subtitle {
+      margin: 4px 0 12px 0;
+      font-size: 15px;
+      color: #606770;
+    }
+    .row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .input, select {
+      border: 1px solid #ccd0d5;
+      border-radius: 5px;
+      padding: 8px 10px;
+      font-size: 15px;
+      box-sizing: border-box;
+      background-color: #f5f6f7;
+    }
+    .half { width: 50%; }
+    .third { width: 33.333%; }
+    .full { width: 100%; margin-top: 8px; }
+
+    .field-label {
+      font-size: 13px;
+      color: #606770;
+      margin: 8px 0 4px 0;
+    }
+    .question {
+      border-radius: 50%;
+      border: 1px solid #606770;
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      text-align: center;
+      line-height: 14px;
+      font-size: 11px;
+      margin-left: 4px;
+    }
+
+    .gender-box {
+      border: 1px solid #ccd0d5;
+      border-radius: 5px;
+      padding: 6px 10px;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f5f6f7;
+      font-size: 15px;
+    }
+    .gender-box input {
+      margin-left: 8px;
+    }
+
+    .info {
+      font-size: 11px;
+      color: #777;
+      margin-top: 8px;
+      margin-bottom: 0;
+    }
+    .info a {
+      color: #385898;
+      text-decoration: none;
+    }
+    .info a:hover { text-decoration: underline; }
+
+    .btn-signup {
+      margin-top: 16px;
+      width: 200px;
+      background: #e89105;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 0;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .login-link {
+      display: block;
+      text-align: center;
+      margin-top: 12px;
+      font-size: 15px;
+      color: #1877f2;
+      text-decoration: none;
+    }
+    .login-link:hover { text-decoration: underline; }
+
+    #statusMsg {
+      font-size: 13px;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 480px) {
+      .card { width: auto; margin: 10px 8px 30px 8px; }
+      .logo-top span { font-size: 40px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="logo-top">
+    <span>UIUbook</span>
+  </div>
+
+  <div class="card">
+    <h1>Create a new account</h1>
+    <p class="subtitle">It's quick and easy.</p>
+
+    <form id="signupForm">
+      <!-- name + nickname -->
+      <div class="row">
+        <input type="text" name="first_name" class="input half" placeholder="First name" required>
+        <input type="text" name="surname" class="input half" placeholder="Nickname (will show in chat)" required>
+      </div>
+
+      <!-- date of birth -->
+      <div class="field-label">
+        Date of birth <span class="question">?</span>
+      </div>
+      <div class="row">
+        <select name="day" class="input third" required>
+          <option value="">Day</option>
+          <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+          <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+          <option>11</option><option>12</option><option>13</option><option>14</option><option>15</option>
+          <option>16</option><option>17</option><option>18</option><option>19</option><option>20</option>
+          <option>21</option><option>22</option><option>23</option><option>24</option><option>25</option>
+          <option>26</option><option>27</option><option>28</option><option>29</option><option>30</option><option>31</option>
+        </select>
+
+        <select name="month" class="input third" required>
+          <option value="">Month</option>
+          <option>Jan</option><option>Feb</option><option>Mar</option><option>Apr</option>
+          <option>May</option><option>Jun</option><option>Jul</option><option>Aug</option>
+          <option>Sep</option><option>Oct</option><option>Nov</option><option>Dec</option>
+        </select>
+
+        <select name="year" class="input third" required>
+          <option value="">Year</option>
+          <option>2025</option><option>2024</option><option>2023</option><option>2022</option>
+          <option>2021</option><option>2020</option><option>2019</option><option>2018</option>
+          <option>2017</option><option>2016</option><option>2015</option><option>2014</option>
+          <option>2013</option><option>2012</option><option>2011</option><option>2010</option>
+          <option>2009</option><option>2008</option><option>2007</option><option>2006</option>
+          <option>2005</option><option>2004</option><option>2003</option><option>2002</option>
+          <option>2001</option><option>2000</option><option>1999</option><option>1998</option>
+          <option>1997</option><option>1996</option><option>1995</option><option>1994</option>
+          <option>1993</option><option>1992</option><option>1991</option><option>1990</option>
+        </select>
+      </div>
+
+      <!-- gender -->
+      <div class="field-label">
+        Gender <span class="question">?</span>
+      </div>
+      <div class="row">
+        <label class="gender-box">
+          <span>Female</span>
+          <input type="radio" name="gender" value="Female" required>
+        </label>
+        <label class="gender-box">
+          <span>Male</span>
+          <input type="radio" name="gender" value="Male">
+        </label>
+        <label class="gender-box">
+          <span>Custom</span>
+          <input type="radio" name="gender" value="Custom">
+        </label>
+      </div>
+
+      <!-- contact + password -->
+      <input type="email" name="contact" class="input full" placeholder="Mobile number or email address" required>
+      <input type="password" name="password" class="input full" placeholder="New password" required>
+
+      <p class="info">
+        People who use our service may have uploaded your contact information to UIUbook.
+        <a href="#">Learn more.</a>
+      </p>
+
+      <p class="info">
+        By clicking Sign Up, you agree to our Terms, Privacy Policy and Cookies Policy.
+      </p>
+
+      <button type="submit" class="btn-signup">Sign Up</button>
+      <p id="statusMsg"></p>
+
+      <a href="index.html" class="login-link">Already have an account?</a>
+    </form>
+  </div>
+
+  <!-- 🔥 Firebase signup + nickname (displayName) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+    import { 
+      getAuth, 
+      createUserWithEmailAndPassword,
+      updateProfile
+    } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBCsaeGzR2D624UNdLGKuHVLwz1JNSAMjE",
+      authDomain: "uiubook.firebaseapp.com",
+      projectId: "uiubook",
+      storageBucket: "uiubook.firebasestorage.app",
+      messagingSenderId: "332448153892",
+      appId: "1:332448153892:web:c41a0f58d12b957954b3b1",
+      measurementId: "G-Q9NZQDYF3S"
+    };
+
+    const app  = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const form     = document.getElementById("signupForm");
+    const statusEl = document.getElementById("statusMsg");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const nickname = form.surname.value.trim();   // 👈 ei ta hobe nickname
+      const email    = form.contact.value;
+      const password = form.password.value;
+
+      statusEl.textContent = "Creating account...";
+      statusEl.style.color = "#555";
+
+      try {
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+
+        if (nickname) {
+          await updateProfile(cred.user, {
+            displayName: nickname
+          });
+        }
+
+        statusEl.textContent = "Account created! Redirecting to login...";
+        statusEl.style.color = "#16a34a";
+
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1000);
+      } catch (error) {
+        if (error.code === "auth/email-already-in-use") {
+          statusEl.textContent = "This email is already registered. Please login instead.";
+        } else {
+          statusEl.textContent = error.message;
+        }
+        statusEl.style.color = "#dc2626";
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UIUbook Chat</title>
+    <style>
+        body {
+            margin: 0;
+            background: #f0f2f5;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+        }
+        .chat-wrapper {
+            max-width: 700px;
+            margin: 40px auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            padding: 16px;
+        }
+        .chat-header {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .chat-header h2 {
+            margin: 0;
+            color: #f97316;
+        }
+        .chat-header p {
+            margin: 4px 0 0;
+            font-size: 13px;
+            color: #555;
+        }
+        #messages {
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            height: 360px;
+            padding: 10px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            background: #f9fafb;
+        }
+        .msg {
+            padding: 6px 10px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            background: #e7f3ff;
+            font-size: 14px;
+        }
+        .msg span {
+            font-weight: 600;
+        }
+        #chatForm {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+        #messageInput {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+        .btn {
+            background: #1877f2;
+            color: white;
+            border: none;
+            padding: 0 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-red {
+            background: #ef4444;
+            width: 100%;
+            margin-top: 4px;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-wrapper">
+        <div class="chat-header">
+            <h2>UIUbook Chat</h2>
+            <p>
+                <span id="statusDot" style="
+                    display:inline-block;
+                    width:10px;
+                    height:10px;
+                    border-radius:50%;
+                    margin-right:6px;
+                    background:#dc2626;"></span>
+                <span id="statusText">Checking status...</span>
+            </p>
+        </div>
+
+        <div id="messages"></div>
+
+        <!-- IMPORTANT: id = chatForm & messageInput EXACTLY ei naam -->
+        <form id="chatForm">
+            <input 
+                type="text" 
+                id="messageInput" 
+                placeholder="Write a message..." 
+                autocomplete="off"
+                required
+            >
+            <button class="btn" type="submit">Send</button>
+        </form>
+
+        <button id="logoutBtn" class="btn btn-red">Log out</button>
+    </div>
+
+    <!-- 🔥 Firebase CHAT script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged, 
+            signOut 
+        } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+
+        import {
+            getFirestore,
+            collection,
+            addDoc,
+            serverTimestamp,
+            query,
+            orderBy,
+            onSnapshot
+        } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBCsaeGzR2D624UNdLGKuHVLwz1JNSAMjE",
+            authDomain: "uiubook.firebaseapp.com",
+            projectId: "uiubook",
+            storageBucket: "uiubook.firebasestorage.app",
+            messagingSenderId: "332448153892",
+            appId: "1:332448153892:web:c41a0f58d12b957954b3b1",
+            measurementId: "G-Q9NZQDYF3S"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db   = getFirestore(app);
+
+        const statusDot    = document.getElementById("statusDot");
+        const statusText   = document.getElementById("statusText");
+        const messagesDiv  = document.getElementById("messages");
+        const chatForm     = document.getElementById("chatForm");
+        const messageInput = document.getElementById("messageInput");
+        const logoutBtn    = document.getElementById("logoutBtn");
+
+        let currentUser     = null;
+        let currentNickname = "";
+        let messagesListening = false;
+
+        function startMessagesListener() {
+            if (messagesListening) return;
+            messagesListening = true;
+
+            const q = query(
+                collection(db, "messages"),
+                orderBy("createdAt", "asc")
+            );
+
+            onSnapshot(q, (snapshot) => {
+                messagesDiv.innerHTML = "";
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const div = document.createElement("div");
+                    div.className = "msg";
+                    const name = data.nickname || "Unknown";
+                    div.innerHTML = "<span>" + name + ":</span> " + (data.text || "");
+                    messagesDiv.appendChild(div);
+                });
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            });
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+
+            if (!user) {
+                currentNickname = "";
+                statusDot.style.background = "#dc2626"; // red
+                statusText.textContent = "Offline (log in from UIUbook)";
+            } else {
+                currentNickname = user.displayName || user.email || "Unknown";
+                statusDot.style.background = "#2563eb"; // blue
+                statusText.textContent = "Active as " + currentNickname;
+            }
+
+            startMessagesListener();
+        });
+
+        // ⭐ MAIN PART: always clear input in finally block
+        chatForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const text = messageInput.value.trim();
+
+            if (!text) {
+                messageInput.value = "";
+                messageInput.focus();
+                return;
+            }
+
+            if (!currentUser) {
+                alert("Please log in from UIUbook login page before sending messages.");
+                messageInput.value = "";
+                messageInput.focus();
+                return;
+            }
+
+            try {
+                await addDoc(collection(db, "messages"), {
+                    text: text,
+                    userId: currentUser.uid,
+                    nickname: currentNickname || currentUser.email || "Unknown",
+                    createdAt: serverTimestamp()
+                });
+            } catch (err) {
+                console.error("Send failed:", err);
+            } finally {
+                // ei part ALWAYS chole
+                messageInput.value = "";
+                messageInput.focus();
+            }
+        });
+
+        logoutBtn.addEventListener("click", () => {
+            signOut(auth)
+              .then(() => {
+                window.location.href = "index.html";
+              })
+              .catch((error) => {
+                alert("Logout failed: " + error.message);
+              });
+        });
+    </script>
+</body>
+</html>
